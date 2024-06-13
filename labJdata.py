@@ -1,7 +1,7 @@
 import time
 import CalcScale
 from labjack import ljm
-def data_fromJ():
+#def data_fromJ():
 try:
     handle = ljm.openS("T7", "USB", "ANY")
 except ljm.ljm.LJMError:
