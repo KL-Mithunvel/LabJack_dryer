@@ -1,4 +1,5 @@
 import labJdata
+import curses
 import watch
 import threading
 import plot
