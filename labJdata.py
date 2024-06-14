@@ -1,7 +1,7 @@
 import time
 import CalcScale
 from labjack import ljm
-def data_fromJ():
+def read_fromJ():
     try:
         handle = ljm.openS("T7", "USB", "ANY")
     except ljm.ljm.LJMError:
@@ -24,4 +24,23 @@ def data_fromJ():
             ljm.close(handle)
             print("Connuction close")
 
+
+def data_fromJ():
+    try:
+        handle = ljm.openS("T7", "USB", "ANY")
+    except ljm.ljm.LJMError:
+        print("connection not made")
+    else:
+        print("Connuction made")
+
+        value = ljm.eReadName(handle, "AIN0")
+
+        print("AIN0: ", value)
+        percentage = CalcScale.scale(value)
+        print("percentage: ", percentage)
+        length = CalcScale.lenfromhome(percentage)
+        print("len: ", length)
+        ljm.close(handle)
+        print("Connuction close")
+    return length
 
