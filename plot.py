@@ -22,4 +22,3 @@ def plotGraph(lt):
 
 
 
-plotGraph([[5,6],[8,7]])
