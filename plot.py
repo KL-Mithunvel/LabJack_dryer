@@ -9,12 +9,13 @@ def plotGraph(lt):
         x.append(i[0])
         y.append(i[1])
 
-
-
     xpoints = np.array(x)
     ypoints = np.array(y)
 
     plt.plot(xpoints, ypoints)
+    plt.xlabel('Time')
+    plt.ylabel('distance in mm')
+
     plt.show()
 
 

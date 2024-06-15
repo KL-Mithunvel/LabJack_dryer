@@ -1,5 +1,5 @@
 import time
-import labJdata
+import LJ_Acquire
 import threading
 
 def timer(mins,train):
