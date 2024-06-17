@@ -11,12 +11,11 @@ def open_device(deviceType, connType):
         return handle
 
 
-def read_ai_chl(chl):
+def read_ai_chl(handle, chl):
     value = ljm.eReadName(handle, chl)
     return value
 
 
 def close_device(handle):
     ljm.close(handle)
-    print("Connuction close")
     pass
