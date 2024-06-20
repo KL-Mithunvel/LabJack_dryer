@@ -11,11 +11,11 @@ def printall(cur):
 
 def add_data(cur, sno, data):
     #data->[time,mm]
-    cur.execute("INSERT INTO data VALUES({},{},{})".format(sno, data[0], data[1]))
+    cur.execute("INSERT INTO data VALUES({},{},{},{},{})".format(sno, data[0], data[1]),"temp","weight")
 
 
 def create_table(cur):
-    cur.execute("CREATE TABLE if not exists data(Sno,time, mm) ")
+    cur.execute("CREATE TABLE if not exists data(Sno,time, mm,temp, weight ) ")
 
 
 def get_cursor(dfile):
@@ -27,7 +27,7 @@ def get_cursor(dfile):
 
 def get_data(cur, sl,con):
     data = []
-    res = cur.execute("SELECT  time, mm FROM data WHERE Sno = {}".format(sl))
+    res = cur.execute("SELECT  time, mm ,temp, weight FROM data WHERE Sno = {}".format(sl))
     x = res.fetchone()
     while x is not None:
         data.append(x)
@@ -43,9 +43,9 @@ def close(con):
 if __name__ == "__main__":
     con = sqlite3.connect("sample.db")
     cur = con.cursor()
-    sl="159"
+    sl = input("Enter Sl No. of Test to view:")
     data = []
-    res = cur.execute("SELECT  time, mm FROM data WHERE Sno = {}".format(sl))
+    res = cur.execute("SELECT  time, mm ,temp, weight FROM data WHERE Sno = {}".format(sl))
     x = res.fetchone()
     while x is not None:
         data.append(x)
