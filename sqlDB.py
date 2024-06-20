@@ -22,16 +22,17 @@ def get_cursor(dfile):
     con = sqlite3.connect(dfile)
     cur = con.cursor()
     create_table(cur)
-    return con
+    return cur, con
 
 
-def get_data(cur, sl):
+def get_data(cur, sl,con):
     data = []
-    res = cur.execute("SELECT  time, mm FROM data ")
+    res = cur.execute("SELECT  time, mm FROM data WHERE Sno = {}".format(sl))
     x = res.fetchone()
     while x is not None:
         data.append(x)
         x = res.fetchone()
+    con.commit()
     return data
 
 
@@ -40,4 +41,13 @@ def close(con):
 
 
 if __name__ == "__main__":
-    print(get_data(get_cursor("sample.db"), "456"))
+    con = sqlite3.connect("sample.db")
+    cur = con.cursor()
+    sl="159"
+    data = []
+    res = cur.execute("SELECT  time, mm FROM data WHERE Sno = {}".format(sl))
+    x = res.fetchone()
+    while x is not None:
+        data.append(x)
+        x = res.fetchone()
+    print(data)
