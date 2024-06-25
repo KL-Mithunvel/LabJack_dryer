@@ -15,8 +15,10 @@ def start_daq_run(interval_sec, duration_min, lj_config:LJ_Config.LJ_Config, db_
     while time.time() < t_end:
         v1 = LJ_Acquire.read_ai_chl(lj, lj_config.MM1011_chl_IOA)
         v2 = LJ_Acquire.read_ai_chl(lj, lj_config.MM1011_chl_IOB)
-        v3 = LJ_Acquire.read_ai_chl(lj, lj_config.MM1011_chl_IOB)
-        v4 = LJ_Acquire.read_ai_chl(lj, lj_config.MM1011_chl_IOB)
+        v3 = LJ_Acquire.read_ai_chl(lj, lj_config.RTD_chl_IOA)
+        v4 = LJ_Acquire.read_ai_chl(lj, lj_config.RTD_chl_IOB)
+        v5 = LJ_Acquire.read_ai_chl(lj, lj_config)
+        v6 = LJ_Acquire.read_ai_chl(lj, lj_config)
         mm = CalcScale.scale_ai_to_mm_MM1011(v2, lj_config.POT_Zero_V, v1)
         temp = CalcScale.rtd_to_temp(v3, v4)
         weight = CalcScale.loadscale_to_kg(1, 0)
