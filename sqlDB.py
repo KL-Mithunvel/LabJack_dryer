@@ -42,6 +42,21 @@ def close(con):
     con.close()
 
 
+def test_testno(cur):
+    while True:
+        no = int(input("Enter Sl No. of Test:"))
+        data = set()
+        cmd = "SELECT  Sno FROM data"
+        res = cur.execute(cmd)
+        x = res.fetchone()
+        while x is not None:
+            data.add(x[0])
+            x = res.fetchone()
+        print(data)
+        if no not in data:
+            break
+    return no
+
 if __name__ == "__main__":
     con = sqlite3.connect("sample.db")
     cur = con.cursor()
