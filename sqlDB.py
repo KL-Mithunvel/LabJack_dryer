@@ -11,7 +11,8 @@ def printall(cur):
 
 def add_data(cur, sno, data):
     #data->[time,mm]
-    cur.execute("INSERT INTO data VALUES({},{},{},{},{})".format(sno, data[0], data[1]),"temp","weight")
+    cmd = "INSERT INTO data VALUES({},{},{},{},{})".format(sno, data[0], data[1], data[2], data[3])
+    cur.execute(cmd)
 
 
 def create_table(cur):
@@ -27,7 +28,8 @@ def get_cursor(dfile):
 
 def get_data(cur, sl,con):
     data = []
-    res = cur.execute("SELECT  time, mm ,temp, weight FROM data WHERE Sno = {}".format(sl))
+    cmd="SELECT  time, mm ,temp, weight FROM data WHERE Sno = {}".format(sl)
+    res = cur.execute(cmd)
     x = res.fetchone()
     while x is not None:
         data.append(x)
