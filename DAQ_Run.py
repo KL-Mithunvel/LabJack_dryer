@@ -21,7 +21,7 @@ def start_daq_run(interval_sec, duration_min, lj_config:LJ_Config.LJ_Config, db_
         v6 = LJ_Acquire.read_ai_chl(lj, lj_config)
         mm = CalcScale.scale_ai_to_mm_MM1011(v2, lj_config.POT_Zero_V, v1)
         temp = CalcScale.rtd_to_temp(v3, v4)
-        weight = CalcScale.loadscale_to_kg(1, 0)
+        weight = CalcScale.loadscale_to_kg(v5, v6)
         sqlDB.add_data(db_cursor, run_sl, [c, mm, temp, weight])
         time.sleep(interval_sec)
         c += interval_sec
