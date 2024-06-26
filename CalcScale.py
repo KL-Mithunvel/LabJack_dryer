@@ -18,21 +18,18 @@ def loadscale_to_kg(val1, val2):
     return 0
 
 
-def rtd_to_temp(val1,val2):
-    R1 = (2.5 - val1) * 10000 / val1
-    R2 = (2.5 - val2) * 10000 / val2
-    return 30
+def rtd_to_temp(val1, val2):
+    R1 = (2.5 - val1) * 1000 / val1
+    R2 = (2.5 - val2) * 1000 / val2
+    Rnet = R2-R1
+    Temp = (Rnet -100)/0.36
+    return Temp
 
 
 if __name__ == "__main__":
     h=LJ_Acquire.open_device("T7","USB")
     while True:
-        l=LJ_Acquire.read_ai_chl(h,"AIN0")
-        l2=LJ_Acquire.read_ai_chl(h,"AIN1")
-        print(l)
-        print(l2)
-        print(scale_ai_to_mm_MM1011(l2,0,l))
-        #rtd_to_temp(l,l2)
-
-
+        l=LJ_Acquire.read_ai_chl(h,"AIN2")
+        l2=LJ_Acquire.read_ai_chl(h,"AIN3")
+        print(rtd_to_temp(l, l2))
         time.sleep(1)
