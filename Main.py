@@ -13,7 +13,8 @@ run_sl = sqlDB.test_testno(con)
 run=True
 DAQ_Run.start_daq_run(1, 0.5, ljc, db, run_sl)
 LJ_Acquire.close_device(lj)
-data = sqlDB.get_data(db, run_sl,con)
+data = sqlDB.get_data(db, run_sl)
+sqlDB.flush(con)
 print(data)
 sqlDB.close(db)
 run=False
