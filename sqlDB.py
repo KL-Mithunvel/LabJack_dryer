@@ -26,7 +26,7 @@ def get_cursor(dfile):
     return cur, con
 
 
-def get_data(cur, sl,con):
+def get_data(cur, sl):
     data = []
     cmd="SELECT  time, mm ,temp, weight FROM data WHERE Sno = {}".format(sl)
     res = cur.execute(cmd)
@@ -34,8 +34,11 @@ def get_data(cur, sl,con):
     while x is not None:
         data.append(x)
         x = res.fetchone()
-    con.commit()
+
     return data
+
+def flush(con):
+    con.commit()
 
 
 def close(con):
