@@ -2,9 +2,8 @@
 max is                                       22
 maxp=21
 minp=10'''
-import time
+import random
 
-import LJ_Acquire
 
 
 def scale_ai_to_mm_MM1011(ai_val, ai_min=0, ai_max=5):
@@ -15,7 +14,7 @@ def scale_ai_to_mm_MM1011(ai_val, ai_min=0, ai_max=5):
 
 
 def loadscale_to_kg(val1, val2):
-    return 0
+    return random.randint(1,4)
 
 
 def rtd_to_temp(val1, val2):
@@ -24,12 +23,3 @@ def rtd_to_temp(val1, val2):
     Rnet = R2-R1
     Temp = (Rnet -100)/0.36
     return Temp
-
-
-if __name__ == "__main__":
-    h=LJ_Acquire.open_device("T7","USB")
-    while True:
-        l=LJ_Acquire.read_ai_chl(h,"AIN2")
-        l2=LJ_Acquire.read_ai_chl(h,"AIN3")
-        print(rtd_to_temp(l, l2))
-        time.sleep(1)
