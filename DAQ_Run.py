@@ -1,27 +1,24 @@
-import threading
 import time
-
-import LJ_Acquire, LJ_Config
+import LJ_Acquire, config
 import CalcScale
-import Live_data
 import sqlDB
 
 
-def start_daq_run(interval_sec, duration_min, lj_config:LJ_Config.LJ_Config, db_cursor, run_sl):
+def start_daq_run(interval_sec, duration_min, lj_config:config.LJ_Config, db_cursor, db_con, run_sl):
     # lj_config - > dict containing LJ info
     lj = LJ_Acquire.open_device(lj_config.DevType, lj_config.ConType)
     t_end = time.time() + 60 * duration_min
     c = 0
     while time.time() < t_end:
-        v1 = LJ_Acquire.read_ai_chl(lj, lj_config.MM1011_chl_IOA)
-        v2 = LJ_Acquire.read_ai_chl(lj, lj_config.MM1011_chl_IOB)
-        v3 = LJ_Acquire.read_ai_chl(lj, lj_config.RTD_chl_IOA)
-        v4 = LJ_Acquire.read_ai_chl(lj, lj_config.RTD_chl_IOB)
-        v5 = LJ_Acquire.read_ai_chl(lj, lj_config.Load_chl_IOA)
-        v6 = LJ_Acquire.read_ai_chl(lj, lj_config.Load_chl_IOB)
-        mm = CalcScale.scale_ai_to_mm_MM1011(v2, lj_config.POT_Zero_V, v1)
-        temp = CalcScale.rtd_to_temp(v3, v4)
-        weight = CalcScale.loadscale_to_kg(v5, v6)
-        sqlDB.add_data(db_cursor, run_sl, [c, mm, temp, weight])
+        data = [c,].append(LJ_Acquire.read_once(lj_config, lj))
+        temp = data [2]
+
+        if temp <=40:
+            LJ_Acquire.write_ai_chl(lj,"DAC0",3.3)
+        else:
+            LJ_Acquire.write_ai_chl(lj, "DAC0", 0)
+        sqlDB.add_data(db_cursor, run_sl, data, db_con)
         time.sleep(interval_sec)
         c += interval_sec
+
+

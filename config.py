@@ -1,3 +1,8 @@
+
+class config:
+    note="klm"
+
+
 class LJ_Config:
     MM1011_chl_IOA: str = "AIN0"
     MM1011_chl_IOB: str = "AIN1"
