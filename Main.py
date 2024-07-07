@@ -9,28 +9,30 @@ import sqlDB
 import tkinter as tk
 import threading
 
+def main():
+    #set up
+    ljc = config.LJ_Config()
+    # read config from config.ini to ljc
+    lj: LJ_Acquire = LJ_Acquire.LJAq(ljc)
+    if not lj.open_device(ljc.DevType, ljc.ConType):
+        GUI.MessageWindow("unable to open LJ."+str(lj.error))
+        exit(1)
+    lv_data=lj.read_once()
+    guic = config.config()
+    command = []
+    main_w = GUI.MainWindow(guic=guic, cmd=command,live_data=lv_data)
+    t1 = threading.Thread(target=main_w.main_loop, args=[])
+    t1.start()
+    while True:
+        lv_data=lj.read_once()
+        if len(command):
+            c = command.pop()
+            if c == GUI.Commands.StartCycle:
+                print("Start Cycle Requested")
+        else:
+            time.sleep(0.01)
 
-#set up
-ljc = config.LJ_Config()
-# read config from config.ini to ljc
-lj: LJ_Acquire = LJ_Acquire.LJAq(ljc)
-if not lj.open_device(ljc.DevType, ljc.ConType):
-    GUI.MessageWindow("unable to open LJ."+str(lj.error))
-    exit(1)
-guic = config.config()
-command = []
-main_w = GUI.MainWindow(guic=guic, cmd=command)
-t1 = threading.Thread(target=main_w.main_loop, args=[])
-t1.start()
-while True:
-    if len(command):
-        c = command.pop()
-        if c == GUI.Commands.StartCycle:
-            print("Start Cycle Requested")
-    else:
-        time.sleep(0.01)
 
-main_w.update_data(x)
 #db ,con = sqlDB.get_cursor("sample.db")
 #run_sl = sqlDB.test_testno(con, sno)
 
@@ -45,3 +47,5 @@ main_w.update_data(x)
 
 #plot.plotGraph(data)
 
+if __name__ == "__main__":
+    main()
