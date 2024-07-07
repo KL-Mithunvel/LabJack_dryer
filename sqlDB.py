@@ -26,7 +26,6 @@ def create_table(cur):
 def get_cursor(dfile):
     con = sqlite3.connect(dfile)
     cur = con.cursor()
-    create_table(cur)
     return cur, con
 
 
@@ -63,6 +62,15 @@ def test_testno(no):
     else:
         return False
 
+def get_testno(cur):
+    data = []
+    res = cur.execute("SELECT  Sno FROM data")
+    x = res.fetchone()
+    while x is not None:
+        if x not in data:
+            data.append(x)
+        x = res.fetchone()
+    return data
 
 if __name__ == "__main__":
     import numpy as np
