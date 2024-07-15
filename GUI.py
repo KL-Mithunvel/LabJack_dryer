@@ -6,8 +6,6 @@ import threading
 from enum import IntEnum
 from enum import auto as enum_auto
 
-import Main
-import config
 
 
 class Commands(IntEnum):
@@ -82,9 +80,9 @@ class report_window:
         self.cmd=command
         self.live_data = None
 
-    def on_select(self):
-        selected_item = self.report_ch.get()
-        self.label.config(text="Selected Item: " + selected_item)
+    def on_select(self,label,x):
+        selected_item = x.get()
+        label.config(text="Selected Item: " + selected_item)
 
 
     def createtk(self):
@@ -92,25 +90,47 @@ class report_window:
         self.root.geometry("800x600")
         self.root.title('Report')
         self.root.tk.call("tk", "scaling", 2)
-        menu = tk.Menu(self.root)
-        self.root.config(menu=menu)
-        filemenu = tk.Menu(menu)
-        menu.add_cascade(label='File', menu=filemenu)
-        filemenu.add_command(label='New', command=Main.main)
-        filemenu.add_separator()
-        filemenu.add_command(label='Exit', command=self.root.quit)
-        self.components["l1"] = tk.Label(self.root, text='Report:')
-        self.components["l1"].grid(row=0, column=1)
-        self.report_ch =ttk.Combobox(self.root, values=self.test_no)
-        self.report_ch.set(self.test_no[0])
-        self.label = tk.Label(self.root, text="Selected test: ")
-        self.label.grid(column=0, row=1)
-        self.report_ch.grid(column=2, row=1)
-        self.components["plot_button"] = tk.Button(master=self.root,command=self.plt, text="Plot")
-        self.components["plot_button"].grid(column=3, row=2)
 
+        self.components["l1"] = tk.Label(self.root, text='Report:')
+        self.components["l1"].grid(row=0, column=0)
+        self.components["l2"] = tk.Label(self.root, text='Test no:')
+        self.components["l2"].grid(row=1, column=0)
+        self.components["l3"] = tk.Label(self.root, text='plot type:')
+        self.components["l3"].grid(row=2, column=0)
+        self.report_ch = ttk.Combobox(self.root, values=self.test_no)
+        self.report_ch.set(self.test_no[0])
+        self.report_ch.grid(column=2, row=1)
+        self.plot_ch=["Full plot", "mass vs shrinkage", "mass vs temp" , "temp vs shrinkage"]
+        self.plt_ch = ttk.Combobox(self.root, values=self.plot_ch)
+        self.plt_ch.set(self.plot_ch[0])
+        self.plt_ch.grid(column=2, row=2)
+        self.components["l4"] = tk.Label(self.root, text="Selected test: ")
+        self.components["l4"].grid(column=1, row=3)
+        self.components["l5"] = tk.Label(self.root, text="Selected plot type: ")
+        self.components["l5"].grid(column=1, row=4)
+        self.components["l6"] = tk.Label(self.root, text="klm")
+        self.components["l6"].grid(column=1, row=5)
+        self.components["plot_button"] = tk.Button(master=self.root,command=self.plt, text="Plot")
+        self.components["plot_button"].grid(column=2, row=6)
+        self.components["export to csv"] = tk.Button(master=self.root, command=self.plt, text="export to csv")
+        self.components["export to csv"].grid(column=3, row=6)
+
+
+    def persent_op(self,ch):
+        if ch == "Full plot":
+            pass
+        elif ch== "mass vs shrinkage":
+            self.components["M%"]=tk.Radiobutton(self.root,text="Mass%", value=1)
+            self.components["M%"].grid(column=2, row=5)
+        elif ch == "mass vs temp":
+            pass
+        elif ch == "temp vs shrinkage":
+            pass
     def plt(self):
         self.cmd.append("plot")
+
+    def csv_export(self):
+        self.cmd.append("csv")
 
     def main_loop(self):
         self.createtk()
@@ -119,7 +139,9 @@ class report_window:
 
 
     def update(self):
-        self.report_ch.bind(self.on_select())
+        self.report_ch.bind(self.on_select(self.components["l4"], self.report_ch))
+        self.plt_ch.bind(self.on_select(self.components["l5"], self.plt_ch))
+        self.persent_op(self.plot_ch)
         if self.live_data:
             self.live_data = None
         self.root.after(1000,self.update)
