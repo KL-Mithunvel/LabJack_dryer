@@ -80,6 +80,7 @@ class report_window:
         self.cmd=command
         self.live_data = None
 
+
     def on_select(self,label,x):
         selected_item = x.get()
         label.config(text="Selected Item: " + selected_item)
@@ -90,6 +91,10 @@ class report_window:
         self.root.geometry("800x600")
         self.root.title('Report')
         self.root.tk.call("tk", "scaling", 2)
+        style = ttk.Style(self.root)
+        style.theme_use("clam")
+
+
 
         self.components["l1"] = tk.Label(self.root, text='Report:')
         self.components["l1"].grid(row=0, column=0)
@@ -108,24 +113,44 @@ class report_window:
         self.components["l4"].grid(column=1, row=3)
         self.components["l5"] = tk.Label(self.root, text="Selected plot type: ")
         self.components["l5"].grid(column=1, row=4)
-        self.components["l6"] = tk.Label(self.root, text="klm")
-        self.components["l6"].grid(column=1, row=5)
-        self.components["plot_button"] = tk.Button(master=self.root,command=self.plt, text="Plot")
+
+        var1 = tk.IntVar()
+        var2 = tk.IntVar()
+        var3 = tk.IntVar()
+        self.components["Mass%"]=tk.Checkbutton(self.root,text="Mass%",variable=var1)
+        self.components["Mass%"].grid(column=2, row=5)
+        self.components["LS%"] = tk.Checkbutton(self.root, text="LS%", variable=var2)
+        self.components["LS%"].grid(column=3, row=5)
+        self.components["temp%"] = tk.Checkbutton(self.root, text="temp%", variable=var3)
+        self.components["temp%"].grid(column=4, row=5)
+        self.components["temp%"]["state"] = "disable"
+        self.components["LS%"]["state"] = "disable"
+        self.components["Mass%"]["state"] = "disable"
+        self.components["plot_button"] = tk.Button(master=self.root, command = self.plt, text="Plot")
         self.components["plot_button"].grid(column=2, row=6)
-        self.components["export to csv"] = tk.Button(master=self.root, command=self.plt, text="export to csv")
+        self.components["export to csv"] = tk.Button(master=self.root, command= self.csv_export, text="export to csv")
         self.components["export to csv"].grid(column=3, row=6)
+
 
 
     def persent_op(self,ch):
         if ch == "Full plot":
             pass
-        elif ch== "mass vs shrinkage":
-            self.components["M%"]=tk.Radiobutton(self.root,text="Mass%", value=1)
-            self.components["M%"].grid(column=2, row=5)
+        elif ch == "mass vs shrinkage":
+            self.components["Mass%"]["state"] = "normal"
+            self.components["LS%"]["state"] = "enable"
+            self.components["temp%"]["state"] = "disable"
         elif ch == "mass vs temp":
-            pass
+            self.components["Mass%"]["state"] = "normal"
+            self.components["temp%"]["state"] = "normal"
+            self.components["LS%"]["state"] = "disable"
         elif ch == "temp vs shrinkage":
-            pass
+            self.components["Mass%"]["state"] = "disable"
+            self.components["LS%"]["state"] = "normal"
+            self.components["temp%"]["state"] = "normal"
+
+    def MassVsShrinkage(self):
+        pass
     def plt(self):
         self.cmd.append("plot")
 
