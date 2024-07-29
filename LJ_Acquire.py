@@ -38,9 +38,8 @@ class LJAq:
         v3 = self.read_ai_chl(self.lj_config.RTD_chl_IOA)
         v4 = self.read_ai_chl(self.lj_config.RTD_chl_IOB)
         v5 = self.read_ai_chl(self.lj_config.Load_chl_IOA)
-        v6 = self.read_ai_chl(self.lj_config.Load_chl_IOB)
         mm = CalcScale.scale_ai_to_mm_MM1011(v2, self.lj_config.POT_Zero_V, v1)
         temp = CalcScale.rtd_to_temp(v3, v4)
-        weight = CalcScale.loadscale_to_kg(v5, v6)
+        weight = CalcScale.loadscale_to_kg(v5)
         data = [mm, temp, weight]
         return data

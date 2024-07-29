@@ -26,7 +26,7 @@ t1.start()
 while True:
     lv_data=lj.read_once()
     if len(command):
-        c = command.pop()
+        c = command.pop() 
         if c == GUI.Commands.StartCycle:
             print("Start Cycle Requested")
     else:

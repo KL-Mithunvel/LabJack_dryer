@@ -101,5 +101,3 @@ def plot_live(lt):
 
 
 
-if __name__ == "__main__":
-    pass
