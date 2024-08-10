@@ -7,7 +7,6 @@ from enum import IntEnum
 from enum import auto as enum_auto
 
 
-
 class Commands(IntEnum):
     StartCycle = enum_auto()
 
@@ -132,13 +131,13 @@ class report_window:
         self.components["export to csv"].grid(column=3, row=6)
 
 
-
-    def persent_op(self,ch):
+    def persent_op(self, E):
+        ch = self.plt_ch.get()
         if ch == "Full plot":
             pass
         elif ch == "mass vs shrinkage":
             self.components["Mass%"]["state"] = "normal"
-            self.components["LS%"]["state"] = "enable"
+            self.components["LS%"]["state"] = "normal"
             self.components["temp%"]["state"] = "disable"
         elif ch == "mass vs temp":
             self.components["Mass%"]["state"] = "normal"
@@ -162,10 +161,18 @@ class report_window:
         self.update()
         self.root.mainloop()
 
+    def option_selected(self, component_name: str, set_state: str):
+        comp = self.components.get(component_name, None)
+        if isinstance(comp, tk.Checkbutton):
+            comp["state"] = set_state
 
     def update(self):
-        self.report_ch.bind(self.on_select(self.components["l4"], self.report_ch))
-        self.plt_ch.bind(self.on_select(self.components["l5"], self.plt_ch))
+        self.on_select(self.components["l4"], self.report_ch)
+        self.on_select(self.components["l5"], self.plt_ch)
+
+
+
+        self.plt_ch.bind("<<ComboboxSelected>>", self.persent_op)
         self.persent_op(self.plot_ch)
         if self.live_data:
             self.live_data = None
