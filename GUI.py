@@ -93,8 +93,6 @@ class report_window:
         style = ttk.Style(self.root)
         style.theme_use("clam")
 
-
-
         self.components["l1"] = tk.Label(self.root, text='Report:')
         self.components["l1"].grid(row=0, column=0)
         self.components["l2"] = tk.Label(self.root, text='Test no:')
@@ -150,6 +148,7 @@ class report_window:
 
     def MassVsShrinkage(self):
         pass
+
     def plt(self):
         self.cmd.append("plot")
 
@@ -169,9 +168,6 @@ class report_window:
     def update(self):
         self.on_select(self.components["l4"], self.report_ch)
         self.on_select(self.components["l5"], self.plt_ch)
-
-
-
         self.plt_ch.bind("<<ComboboxSelected>>", self.persent_op)
         self.persent_op(self.plot_ch)
         if self.live_data:
