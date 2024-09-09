@@ -47,9 +47,9 @@ def plotGraph(lt):
     y3points = np.array(y3)
     twin2.spines.right.set_position(("axes", 1.2))
 
-    p1, = ax.plot(xpoints, y1points, "C0", label="Density")
+    p1, = ax.plot(xpoints, y1points, "C0", label="distance")
     p2, = twin1.plot(xpoints, y2points, "C1", label="Temperature")
-    p3, = twin2.plot(xpoints, y3points, "C2", label="Velocity")
+    p3, = twin2.plot(xpoints, y3points, "C2", label="weight")
 
     ax.set(xlim=(min(xpoints),max(xpoints)), ylim=(min(y1points),max(y1points)), xlabel="Time", ylabel="Distance")
     twin1.set(ylim=(min(y2points),max(y2points)), ylabel="Temperature")
